@@ -61,7 +61,7 @@ jobs:
       - name: (Emscripten) Build emscripten wasm module
         if: ${{ startsWith(matrix.identifier, 'emscripten') }}
         run: |
-          emmake make lib CC=emcc
+          emmake make CC=emcc
           emcc ./dist/libsm64.so -o ./dist/libsm64.js -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_ALL=1
 
       - name: Upload build

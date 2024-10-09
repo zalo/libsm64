@@ -12,7 +12,11 @@
         #define SM64_LIB_FN __declspec(dllimport)
     #endif
 #elif defined(__GNUC__) && __GNUC__ >= 4
-    #define SM64_LIB_FN __attribute__ ((visibility("default")))
+    #ifdef EMSCRIPTEN
+        #define SM64_LIB_FN __attribute__ ((used))
+    #else
+        #define SM64_LIB_FN __attribute__ ((visibility("default")))
+    #endif
 #else
     #define SM64_LIB_FN
 #endif
