@@ -8,6 +8,7 @@ extern SM64DebugPrintFunctionPtr g_debug_print_func;
 #define DEBUG_PRINT( ... ) do { \
     if( g_debug_print_func ) { \
         char debugStr[1024]; \
+        printf( debugStr, __VA_ARGS__ ); \
         sprintf( debugStr, __VA_ARGS__ ); \
         g_debug_print_func( debugStr ); \
     } \
