@@ -31,6 +31,12 @@ jobs:
         if: ${{ startsWith(matrix.identifier, 'windows') }}
         uses: egor-tensin/setup-mingw@v2
 
+      - name: (Windows) Install Test Dependencies
+        if: ${{ startsWith(matrix.identifier, 'windows') }}
+        shell: sh
+        run: |
+          pacman -S mingw-w64-x86_64-SDL2 mingw-w64-x86_64-glew
+
       - name: (Windows) Prepare cross compilation
         if: ${{ startsWith(matrix.identifier, 'windows') }}
         shell: sh
@@ -48,19 +54,21 @@ jobs:
         run: |
           make lib -j`nproc`
 
-      - name: (Linux) Build test executable
-        if: ${{ startsWith(matrix.identifier, 'linux') }}
+      - name: Build test executable
         run: |
           make test -j`nproc`
 
       - name: (Linux) Build emscripten wasm module
         if: ${{ startsWith(matrix.identifier, 'linux') }}
         run: |
+          ls
+          ls ./dist
           emmake make CC=emcc
-          emcc dist/libsm64.so -o libsm64.js
+          emcc ./dist/libsm64.so -o ./dist/libsm64.js
 
       - name: Upload build
         uses: actions/upload-artifact@v4
+        if: ${{ always() }}
         with:
           name: libsm64_${{ matrix.identifier }}
           path: |
