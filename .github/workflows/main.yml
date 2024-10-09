@@ -29,7 +29,7 @@ jobs:
 
       - name: (Emscripten) Set up Emscripten
         uses: mymindstorm/setup-emsdk@v14
-        if: ${{ startsWith(matrix.identifier, 'windows') }}
+        if: ${{ startsWith(matrix.identifier, 'emscripten') }}
 
       - name: (Windows) Set up MinGW
         if: ${{ startsWith(matrix.identifier, 'emscripten') }}
@@ -61,7 +61,7 @@ jobs:
       - name: (Emscripten) Build emscripten wasm module
         if: ${{ startsWith(matrix.identifier, 'emscripten') }}
         run: |
-          emmake make CC=emcc
+          emmake make lib CC=emcc
           emcc ./dist/libsm64.so -o ./dist/libsm64.js -s EXPORT_ES6=1 -s MODULARIZE=1
 
       - name: Upload build
