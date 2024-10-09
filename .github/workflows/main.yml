@@ -31,10 +31,16 @@ jobs:
         if: ${{ startsWith(matrix.identifier, 'windows') }}
         uses: egor-tensin/setup-mingw@v2
 
+      - uses: msys2/setup-msys2@v2
+        if: ${{ startsWith(matrix.identifier, 'windows') }}
+        with:
+          msystem: MSYS
+
       - name: (Windows) Install Test Dependencies
         if: ${{ startsWith(matrix.identifier, 'windows') }}
-        shell: sh
+        shell: msys2 {0}
         run: |
+          makepkg-mingw -sCLfc --noconfirm --noprogressbar
           pacman -S mingw-w64-x86_64-SDL2 mingw-w64-x86_64-glew
 
       - name: (Windows) Prepare cross compilation
@@ -61,9 +67,11 @@ jobs:
       - name: (Linux) Build emscripten wasm module
         if: ${{ startsWith(matrix.identifier, 'linux') }}
         run: |
-          ls
-          ls ./dist
           emmake make CC=emcc
+          echo "Printing Main folder"
+          ls ./dist
+          echo "Printing dist folder"
+          ls ./dist
           emcc ./dist/libsm64.so -o ./dist/libsm64.js
 
       - name: Upload build
