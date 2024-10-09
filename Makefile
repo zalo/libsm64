@@ -91,4 +91,3 @@ clean:
 	rm -rf $(BUILD_DIR) $(DIST_DIR) $(TEST_FILE)
 
 -include $(DEP_FILES)
--include /usr/local/include
