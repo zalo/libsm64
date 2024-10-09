@@ -62,7 +62,7 @@ jobs:
         if: ${{ startsWith(matrix.identifier, 'emscripten') }}
         run: |
           emmake make CC=emcc
-          emcc ./dist/libsm64.so -o ./dist/libsm64.js -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_ALL=1
+          emcc ./dist/libsm64.so -o ./dist/libsm64.js -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=ccall,cwrap -s EXPORTED_FUNCTIONS=_malloc,_free -s ALLOW_MEMORY_GROWTH=1 -s ASSERTIONS=1 -s SAFE_HEAP=1 -s DEMANGLE_SUPPORT=1 -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s EXPORT_NAME=SM64Module
 
       - name: Upload build
         uses: actions/upload-artifact@v4
